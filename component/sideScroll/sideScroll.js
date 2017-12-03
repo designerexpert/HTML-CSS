@@ -3,13 +3,13 @@ window.onresize = () => doResize();
 
 const doResize =() => {
     if (window.innerWidth > 750) {
-        container[0].setPanhide(3);
+        container[0].itemsToShow(3);
     }
     if (window.innerWidth < 750) {
-        container[0].setPanhide(2);
+        container[0].itemsToShow(2);
     }
     if (window.innerWidth < 500) {
-        container[0].setPanhide(1); // How many items to hide based on Ress less than 750;
+        container[0].itemsToShow(1); // How many items to show on carousel based on Ress less than 750;
     }
 }
 
@@ -19,21 +19,21 @@ class ScrollPan {
         this.project = container.querySelectorAll('.section__projects__projectBlock');
         this.project = Array.from(this.project).map(project => new ScrollItem(project, this));
         this.activeProject = this.project[0]; // automatically set activeProject to the first project on list.
-        this.panhide; // Arbitrary number of items to be hidden from the view, should decrease with ressolution.
+        this.itemsShow; // Arbitrary number of items to be hidden from the view, should decrease with ressolution.
         this.activePanProjects;
-        this.pushloc = this.project.length - this.panhide;
+        this.pushloc = this.project.length - this.itemsShow;
         this.shiftloc = 0;
         this.scrollButton = container.querySelectorAll('.sideScroll');
         this.scrollButton = Array.from(this.scrollButton).map(button => new ScrollButton(button, this));
         this.activatePanProjects(); // Load up the items to be shown in the pan onto an array
         this.init(); // Upon class creation initiate the first 3 tabs with init();
-        this.updateActive(this.project[0]);
+        // this.updateActive(this.project[0]); // Enable Description on the First Item of the Pan
     }
-    setPanhide(n) {
-        this.panhide = this.project.length - n;
+    itemsToShow(n) {
+        this.itemsShow = this.project.length - n;
         this.activatePanProjects();
         this.hideAll();
-        this.pushloc = this.project.length - this.panhide;
+        this.pushloc = this.project.length - this.itemsShow;
         this.init();
     }
 
@@ -43,7 +43,7 @@ class ScrollPan {
         });
     }
     activatePanProjects() {
-        this.activePanProjects = this.project.slice(0, this.project.length - this.panhide);
+        this.activePanProjects = this.project.slice(0, this.project.length - this.itemsShow);
     }
     init() {
         // Initiate and render the objects passed on the activePanProjects array.
@@ -64,10 +64,10 @@ class ScrollPan {
         if (buttonClicked.dataset.tab === 'right' && this.pushloc === this.project.length) {
             // Implement Looping going Right
             this.hideAll();
-            this.activePanProjects = this.project.slice(0, this.project.length - this.panhide);
+            this.activePanProjects = this.project.slice(0, this.project.length - this.itemsShow);
             if (window.innerWidth < 500) this.updateActive(this.project[0]); //for Mobile Browsers Auto Show Description
             this.init();
-            this.pushloc = this.project.length - this.panhide;
+            this.pushloc = this.project.length - this.itemsShow;
             this.shiftloc = 0;
         } else if (buttonClicked.dataset.tab === 'right' && this.pushloc < this.project.length) {
             this.activePanProjects.shift().hide();
@@ -87,10 +87,10 @@ class ScrollPan {
         } else if (buttonClicked.dataset.tab === 'left' && this.shiftloc === 0) {
             // implement looping going left
             this.hideAll();
-            this.activePanProjects = this.project.slice(this.panhide, this.project.length);
+            this.activePanProjects = this.project.slice(this.itemsShow, this.project.length);
             if (window.innerWidth < 500) this.updateActive(); //for Mobile Browsers Auto Show Description
             this.pushloc = 0;
-            this.shiftloc = this.panhide;
+            this.shiftloc = this.itemsShow;
             this.init();
         } 
     }

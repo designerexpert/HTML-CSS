@@ -1,6 +1,7 @@
 @import './nav/nav.css';
 @import './section/section.css';
 @import './sideScroll/sideScroll.css';
+@import './divider/divider.css';
 
 body {
     margin: 0;

@@ -1,8 +1,6 @@
 .nav {
-    /* width: 700px; */
     width: 100%;
     min-width: 300px;
-    /* background-color: #2E3192; */
     background: #232323;
     /* Begin Always Ontop Implementation */
     position: fixed;
